@@ -10,7 +10,8 @@ start() {
   docker run --rm -d --name $NAME \
     --publish 127.0.0.1:9980:9980 \
     nebulouslabs/siaantfarm
-    
+
+    echo type=sia
     echo endpoint=http://$(docker_ip):9980/
     echo _connect=$(docker_ip):9980
 }
