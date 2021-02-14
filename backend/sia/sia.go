@@ -31,8 +31,6 @@ const (
 	minSleep      = 10 * time.Millisecond
 	maxSleep      = 2 * time.Second
 	decayConstant = 2 // bigger for slower decay, exponential
-
-	siaRootURL = "http://localhost:9980"
 )
 
 // Register with Fs
@@ -142,7 +140,6 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (in io.Read
 		Method:  "GET",
 		Path:    path.Join("/renter/stream/", o.fs.root, o.fs.opt.Enc.FromStandardPath(o.remote)),
 		Options: options,
-		RootURL: siaRootURL,
 	}
 	err = o.fs.pacer.Call(func() (bool, error) {
 		resp, err = o.fs.srv.Call(ctx, &opts)
@@ -164,7 +161,6 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 		Body:          in,
 		ContentLength: &size,
 		Parameters:    url.Values{},
-		RootURL:       siaRootURL,
 	}
 	opts.Parameters.Set("force", "true")
 
@@ -184,9 +180,8 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 func (o *Object) Remove(ctx context.Context) (err error) {
 	var resp *http.Response
 	opts := rest.Opts{
-		Method:  "POST",
-		Path:    path.Join("/renter/delete/", o.fs.opt.Enc.FromStandardPath(path.Join(o.fs.root, o.remote))),
-		RootURL: siaRootURL,
+		Method: "POST",
+		Path:   path.Join("/renter/delete/", o.fs.opt.Enc.FromStandardPath(path.Join(o.fs.root, o.remote))),
 	}
 	err = o.fs.pacer.Call(func() (bool, error) {
 		resp, err = o.fs.srv.Call(ctx, &opts)
@@ -199,9 +194,8 @@ func (o *Object) Remove(ctx context.Context) (err error) {
 // sync the size and other metadata down for the object
 func (o *Object) readMetaData(ctx context.Context) (err error) {
 	opts := rest.Opts{
-		Method:  "GET",
-		Path:    path.Join("/renter/file/", o.fs.opt.Enc.FromStandardPath(path.Join(o.fs.root, o.remote))),
-		RootURL: siaRootURL,
+		Method: "GET",
+		Path:   path.Join("/renter/file/", o.fs.opt.Enc.FromStandardPath(path.Join(o.fs.root, o.remote))),
 	}
 
 	var result api.FileResponse
@@ -258,9 +252,8 @@ func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err e
 	var result api.DirectoriesResponse
 	var resp *http.Response
 	opts := rest.Opts{
-		Method:  "GET",
-		Path:    path.Join("/renter/dir/", dirPrefix) + "/",
-		RootURL: siaRootURL,
+		Method: "GET",
+		Path:   path.Join("/renter/dir/", dirPrefix) + "/",
 	}
 
 	err = f.pacer.Call(func() (bool, error) {
@@ -331,7 +324,6 @@ func (f *Fs) Mkdir(ctx context.Context, dir string) (err error) {
 		Method:     "POST",
 		Path:       path.Join("/renter/dir/", f.opt.Enc.FromStandardPath(path.Join(f.root, dir))),
 		Parameters: url.Values{},
-		RootURL:    siaRootURL,
 	}
 	opts.Parameters.Set("action", "create")
 
@@ -351,9 +343,8 @@ func (f *Fs) Mkdir(ctx context.Context, dir string) (err error) {
 func (f *Fs) Rmdir(ctx context.Context, dir string) (err error) {
 	var resp *http.Response
 	opts := rest.Opts{
-		Method:  "GET",
-		Path:    path.Join("/renter/dir/", f.opt.Enc.FromStandardPath(path.Join(f.root, dir))),
-		RootURL: siaRootURL,
+		Method: "GET",
+		Path:   path.Join("/renter/dir/", f.opt.Enc.FromStandardPath(path.Join(f.root, dir))),
 	}
 
 	var result api.DirectoriesResponse
@@ -372,7 +363,6 @@ func (f *Fs) Rmdir(ctx context.Context, dir string) (err error) {
 		Method:     "POST",
 		Path:       path.Join("/renter/dir/", f.opt.Enc.FromStandardPath(path.Join(f.root, dir))),
 		Parameters: url.Values{},
-		RootURL:    siaRootURL,
 	}
 	opts.Parameters.Set("action", "delete")
 
