@@ -58,8 +58,11 @@ func init() {
 			Name:     config.ConfigEncoding,
 			Help:     config.ConfigEncodingHelp,
 			Advanced: true,
-			Default: encoder.EncodeInvalidUtf8 |
-				encoder.EncodeSlash,
+			Default: (encoder.Display |
+				encoder.EncodeLeftSpace |
+				encoder.EncodeRightSpace |
+				encoder.EncodeLeftTilde |
+				encoder.EncodeInvalidUtf8),
 		},
 		}})
 }
