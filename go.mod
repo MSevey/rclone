@@ -8,6 +8,7 @@ require (
 	github.com/Azure/azure-pipeline-go v0.2.3
 	github.com/Azure/azure-storage-blob-go v0.13.0
 	github.com/Azure/go-autorest/autorest/adal v0.9.10
+	github.com/Azure/go-ntlmssp v0.0.0-20200615164410-66371956d46c
 	github.com/Microsoft/go-winio v0.4.16 // indirect
 	github.com/Unknwon/goconfig v0.0.0-20200908083735-df7de6a44db8
 	github.com/a8m/tree v0.0.0-20210115125333-10a5fd5b637d
@@ -21,7 +22,8 @@ require (
 	github.com/calebcase/tmpfile v1.0.2 // indirect
 	github.com/colinmarc/hdfs/v2 v2.2.0
 	github.com/coreos/go-semver v0.3.0
-	github.com/dropbox/dropbox-sdk-go-unofficial v5.6.0+incompatible
+	github.com/dop251/scsu v0.0.0-20200422003335-8fadfb689669
+	github.com/dropbox/dropbox-sdk-go-unofficial v1.0.1-0.20210114204226-41fdcdae8a53
 	github.com/gabriel-vasile/mimetype v1.1.2
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
@@ -29,7 +31,7 @@ require (
 	github.com/hanwen/go-fuse/v2 v2.0.3
 	github.com/iguanesolutions/go-systemd/v5 v5.0.0
 	github.com/jcmturner/gokrb5/v8 v8.4.2
-	github.com/jlaffaye/ftp v0.0.0-20201112195030-9aae4d151126
+	github.com/jlaffaye/ftp v0.0.0-20210302195756-c3c8c7ac6590
 	github.com/jzelinskie/whirlpool v0.0.0-20201016144138-0675e54bb004
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/klauspost/compress v1.11.7

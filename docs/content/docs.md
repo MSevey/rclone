@@ -161,8 +161,9 @@ The syntax of the paths passed to the rclone command are as follows.
 
 This refers to the local file system.
 
-On Windows only `\` may be used instead of `/` in local paths
-**only**, non local paths must use `/`.
+On Windows `\` may be used instead of `/` in local paths **only**,
+non local paths must use `/`. See [local filesystem](https://rclone.org/local/#windows-paths)
+documentation for more about Windows-specific paths.
 
 These paths needn't start with a leading `/` - if they don't then they
 will be relative to the current directory.
@@ -363,7 +364,7 @@ This option controls the bandwidth limit. For example
 
     --bwlimit 10M
     
-would mean limit the upload and download bandwidth to 10 Mbyte/s.
+would mean limit the upload and download bandwidth to 10 MByte/s.
 **NB** this is **bytes** per second not **bits** per second. To use a
 single limit, specify the desired bandwidth in kBytes/s, or use a
 suffix b|k|M|G. The default is `0` which means to not limit bandwidth.
@@ -373,7 +374,7 @@ The upload and download bandwidth can be specified seperately, as
 
     --bwlimit 10M:100k
 
-would mean limit the upload bandwidth to 10 Mbyte/s and the download
+would mean limit the upload bandwidth to 10 MByte/s and the download
 bandwidth to 100 kByte/s. Either limit can be "off" meaning no limit, so
 to just limit the upload bandwidth you would use
 
@@ -402,9 +403,9 @@ working hours could be:
 `--bwlimit "08:00,512k 12:00,10M 13:00,512k 18:00,30M 23:00,off"`
 
 In this example, the transfer bandwidth will be set to 512kBytes/sec
-at 8am every day. At noon, it will rise to 10Mbytes/s, and drop back
+at 8am every day. At noon, it will rise to 10MByte/s, and drop back
 to 512kBytes/sec at 1pm. At 6pm, the bandwidth limit will be set to
-30MBytes/s, and at 11pm it will be completely disabled (full speed).
+30MByte/s, and at 11pm it will be completely disabled (full speed).
 Anything between 11pm and 8am will remain unlimited.
 
 An example of timetable with `WEEKDAY` could be:
@@ -412,8 +413,8 @@ An example of timetable with `WEEKDAY` could be:
 `--bwlimit "Mon-00:00,512 Fri-23:59,10M Sat-10:00,1M Sun-20:00,off"`
 
 It means that, the transfer bandwidth will be set to 512kBytes/sec on
-Monday. It will rise to 10Mbytes/s before the end of Friday. At 10:00
-on Saturday it will be set to 1Mbyte/s. From 20:00 on Sunday it will
+Monday. It will rise to 10MByte/s before the end of Friday. At 10:00
+on Saturday it will be set to 1MByte/s. From 20:00 on Sunday it will
 be unlimited.
 
 Timeslots without `WEEKDAY` are extended to the whole week. So this

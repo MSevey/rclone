@@ -76,8 +76,8 @@ type ConfigInfo struct {
 	NoUnicodeNormalization bool
 	NoUpdateModTime        bool
 	DataRateUnit           string
-	CompareDest            string
-	CopyDest               string
+	CompareDest            []string
+	CopyDest               []string
 	BackupDir              string
 	Suffix                 string
 	SuffixKeepExtension    bool
@@ -162,6 +162,14 @@ func NewConfig() *ConfigInfo {
 	c.TrackRenamesStrategy = "hash"
 
 	return c
+}
+
+// TimeoutOrInfinite returns ci.Timeout if > 0 or infinite otherwise
+func (c *ConfigInfo) TimeoutOrInfinite() time.Duration {
+	if c.Timeout > 0 {
+		return c.Timeout
+	}
+	return ModTimeNotSupported
 }
 
 type configContextKeyType struct{}

@@ -651,6 +651,46 @@ func TestRmdirsLeaveRoot(t *testing.T) {
 	)
 }
 
+func TestRmdirsWithFilter(t *testing.T) {
+	ctx := context.Background()
+	ctx, fi := filter.AddConfig(ctx)
+	require.NoError(t, fi.AddRule("+ /A1/B1/**"))
+	require.NoError(t, fi.AddRule("- *"))
+	r := fstest.NewRun(t)
+	defer r.Finalise()
+	r.Mkdir(ctx, r.Fremote)
+
+	r.ForceMkdir(ctx, r.Fremote)
+
+	require.NoError(t, operations.Mkdir(ctx, r.Fremote, "A1"))
+	require.NoError(t, operations.Mkdir(ctx, r.Fremote, "A1/B1"))
+	require.NoError(t, operations.Mkdir(ctx, r.Fremote, "A1/B1/C1"))
+
+	fstest.CheckListingWithPrecision(
+		t,
+		r.Fremote,
+		[]fstest.Item{},
+		[]string{
+			"A1",
+			"A1/B1",
+			"A1/B1/C1",
+		},
+		fs.GetModifyWindow(ctx, r.Fremote),
+	)
+
+	require.NoError(t, operations.Rmdirs(ctx, r.Fremote, "", false))
+
+	fstest.CheckListingWithPrecision(
+		t,
+		r.Fremote,
+		[]fstest.Item{},
+		[]string{
+			"A1",
+		},
+		fs.GetModifyWindow(ctx, r.Fremote),
+	)
+}
+
 func TestCopyURL(t *testing.T) {
 	ctx := context.Background()
 	ci := fs.GetConfig(ctx)
@@ -909,9 +949,9 @@ func TestCopyFileCompareDest(t *testing.T) {
 	r := fstest.NewRun(t)
 	defer r.Finalise()
 
-	ci.CompareDest = r.FremoteName + "/CompareDest"
+	ci.CompareDest = []string{r.FremoteName + "/CompareDest"}
 	defer func() {
-		ci.CompareDest = ""
+		ci.CompareDest = nil
 	}()
 	fdst, err := fs.NewFs(ctx, r.FremoteName+"/dst")
 	require.NoError(t, err)
@@ -995,9 +1035,9 @@ func TestCopyFileCopyDest(t *testing.T) {
 		t.Skip("Skipping test as remote does not support server-side copy")
 	}
 
-	ci.CopyDest = r.FremoteName + "/CopyDest"
+	ci.CopyDest = []string{r.FremoteName + "/CopyDest"}
 	defer func() {
-		ci.CopyDest = ""
+		ci.CopyDest = nil
 	}()
 
 	fdst, err := fs.NewFs(ctx, r.FremoteName+"/dst")
